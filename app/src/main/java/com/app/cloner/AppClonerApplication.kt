@@ -2,18 +2,20 @@ package com.app.cloner
 
 import android.app.Application
 import android.content.Context
-// পুরনো black.app.core... মুছে নিচেরটি দিন
 import top.niunaijun.blackbox.BlackBoxCore
+import top.niunaijun.blackbox.client.ClientConfiguration
 
 class AppClonerApplication : Application() {
-    // বাকি ভেতরের কোড সব একই থাকবে...
-}
 
     override fun attachBaseContext(base: Context) {
         super.attachBaseContext(base)
         try {
-            // ইঞ্জিন ইনিশিয়ালাইজেশন
-            BlackBoxCore.get().doAttachBaseContext(base)
+            // ইঞ্জিন ইনিশিয়ালাইজেশন এবং ক্লায়েন্ট কনফিগারেশন (p1) যুক্ত করা
+            BlackBoxCore.get().doAttachBaseContext(base, object : ClientConfiguration() {
+                override fun getHostPackageName(): String {
+                    return base.packageName
+                }
+            })
         } catch (e: Exception) {
             e.printStackTrace()
         }
